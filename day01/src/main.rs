@@ -28,7 +28,16 @@ fn main() {
 
     let mut result = chars.iter().dedup_with_count().map(|(count, elem)| elem.to_string().parse::<u32>().unwrap() * (count as u32 - 1)).sum::<u32>();
     if chars[0] == chars[chars.len() - 1] {
-        result += chars[0].to_string().parse::<u32>().unwrap()
+        result += chars[0].to_string().parse::<u32>().unwrap();
     }
-    println!("Result: {}", result)
+    println!("Part 1 result: {}", result);
+
+    let mut result2 = 0;
+    for i in 0..(chars.len()/2) {
+        if chars[i] == chars[i + (chars.len() / 2)] {
+            result2 += chars[i].to_string().parse::<u32>().unwrap() * 2;
+        }
+    }
+
+    println!("Part 2 result: {}", result2);
 }
