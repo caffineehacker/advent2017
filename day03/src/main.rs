@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use clap::Parser;
 
 #[derive(Parser, Debug)]
@@ -43,5 +45,53 @@ fn main() {
         println!("Part 1: {}", y.abs() + x.abs());
     }
 
-    println!("Ring length: {}", total_length);
+    if args.debug {
+        println!("Ring length: {}", total_length);
+    }
+
+    // Naive approach since I think the numbers will grow quickly
+    long_side = 1;
+    let mut direction = (1, 0);
+    let mut values: HashMap<(i32, i32), i32> = HashMap::new();
+    let mut position = (0, 0);
+    values.insert(position, 1);
+    loop {
+        position.0 += direction.0;
+        position.1 += direction.1;
+
+        if direction.0 == 1 && position.0 == (long_side - 1) / 2 + 1 {
+            direction.0 = 0;
+            direction.1 = -1;
+            long_side += 2;
+        } else if direction.1 == -1 && position.1 == (long_side - 1) / -2 {
+            direction.0 = -1;
+            direction.1 = 0;
+        } else if direction.0 == -1 && position.0 == (long_side - 1) / -2 {
+            direction.0 = 0;
+            direction.1 = 1;
+        } else if direction.1 == 1 && position.1 == (long_side - 1) / 2 {
+            direction.0 = 1;
+            direction.1 = 0;
+        }
+
+        let mut sum = 0;
+        for x in -1..=1 {
+            for y in -1..=1 {
+                if values.contains_key(&(position.0 + x, position.1 + y)) {
+                    sum += values.get(&(position.0 + x, position.1 + y)).unwrap();
+                }
+            }
+        }
+
+        if args.debug {
+            println!("({}, {}): {}", position.0, position.1, sum);
+        }
+
+        if sum > args.puzzle {
+            println!("Part 2: {}", sum);
+            return;
+        }
+
+        values.insert(position, sum);
+    }
 }
