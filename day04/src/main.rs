@@ -30,4 +30,15 @@ fn main() {
         .collect();
 
     println!("Part 1: {}", valid_lines.len());
+
+    let valid_lines_anagram: Vec<&String> = lines
+        .iter()
+        .filter(|line| {
+            line.split_ascii_whitespace()
+                .map(|word| word.chars().sorted().collect::<String>())
+                .all_unique()
+        })
+        .collect();
+
+    println!("Part 2: {}", valid_lines_anagram.len());
 }
