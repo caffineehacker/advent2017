@@ -12,6 +12,8 @@ struct Args {
     data_file: String,
     #[arg(long)]
     debug: bool,
+    #[arg(long)]
+    part2: bool,
 }
 
 fn main() {
@@ -33,12 +35,16 @@ fn main() {
     let mut step_number = 0;
     loop {
         if index < 0 || index >= (jumps.len() as i32) {
-            println!("Part 1: {}", step_number);
+            println!("Answer: {}", step_number);
             break;
         }
 
         let jump = jumps[index as usize];
-        jumps[index as usize] += 1;
+        if args.part2 && jumps[index as usize] >= 3 {
+            jumps[index as usize] -= 1;
+        } else {
+            jumps[index as usize] += 1;
+        }
         if args.debug {
             println!("{} -> {}", index, index + jump);
         }
