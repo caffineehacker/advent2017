@@ -1,7 +1,7 @@
 use clap::Parser;
 use itertools::Itertools;
 use std::{
-    collections::HashSet,
+    collections::HashMap,
     fs::File,
     io::{BufRead, BufReader},
 };
@@ -32,16 +32,17 @@ fn main() {
         .map(|bank| bank.parse::<i32>().unwrap())
         .collect_vec();
 
-    let mut seen_states: HashSet<Vec<i32>> = HashSet::new();
+    let mut seen_states: HashMap<Vec<i32>, i32> = HashMap::new();
     let mut iterations = 0;
     loop {
-        if seen_states.contains(&banks) {
+        if seen_states.contains_key(&banks) {
             println!("Part 1: {}", iterations);
+            println!("Part 2: {}", iterations - seen_states.get(&banks).unwrap());
             break;
         }
 
+        seen_states.insert(banks.clone(), iterations);
         iterations += 1;
-        seen_states.insert(banks.clone());
 
         let max = banks.iter().max().unwrap();
         let (mut index, count) = banks.iter().find_position(|bank| *bank == max).unwrap();
