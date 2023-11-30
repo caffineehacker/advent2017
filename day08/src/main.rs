@@ -28,6 +28,7 @@ fn main() {
         .collect();
 
     let mut registers: HashMap<String, i32> = HashMap::new();
+    let mut max_seen = 0;
 
     for line in lines.iter() {
         let (
@@ -69,9 +70,14 @@ fn main() {
                 amount
             };
 
-            *registers.get_mut(register).unwrap() += amount;
+            let register = registers.get_mut(register).unwrap();
+            *register += amount;
+            if *register > max_seen {
+                max_seen = *register;
+            }
         }
     }
 
     println!("Part 1: {}", registers.values().max().unwrap());
+    println!("Part 2: {}", max_seen);
 }
