@@ -30,6 +30,7 @@ fn main() {
     let mut depth = 0;
     let mut score = 0;
     let mut in_garbage = false;
+    let mut garbage_count = 0;
 
     let mut index = 0;
     while index < input.len() {
@@ -41,7 +42,9 @@ fn main() {
                 '>' => {
                     in_garbage = false;
                 }
-                _ => {}
+                _ => {
+                    garbage_count += 1;
+                }
             }
         } else {
             match input[index] {
@@ -66,4 +69,5 @@ fn main() {
     }
 
     println!("Part 1: {}", score);
+    println!("Part 2: {}", garbage_count);
 }
